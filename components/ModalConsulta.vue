@@ -88,12 +88,11 @@
     generarDocumento(){ 
       const doc = new jsPDF();            
       doc.setFont("helvetica", "normal");      
+      
       const empresa = {
-        nombre: "Mi Empresa S.A.",
-        direccion: "Calle Ficticia 123",
-        ciudad: "Ciudad, País",
-        telefono: "+123 456 789",
-        email: "contacto@miempresa.com"
+        nombre: "Viveres Santiaguito",
+        direccion: "Calle los Vergeles, Barrio el Vergel",                
+        email: "romulo_castro61@hotmail.com"
       };    
       const cliente = {
         nombre: "Juan Pérez",
@@ -116,7 +115,7 @@
       const total = subtotal + impuesto;
 
       doc.setFontSize(18);
-      doc.text("Factura", 105, 20, null, null, "center");
+      doc.text("Detalle de Venta", 105, 20, null, null, "center");
 
       doc.setFontSize(12);
       doc.text(`Empresa: ${empresa.nombre}`, 10, 30);
@@ -135,9 +134,9 @@
       doc.line(10, 55, 200, 55);
 
       doc.text("Descripción", 10, 65);
-      doc.text("Cantidad", 140, 65);
-      doc.text("Precio Unitario", 170, 65);
-      doc.text("Total", 190, 65);
+      doc.text("Cantidad", 120, 65);
+      doc.text("Precio.U ", 150, 65);
+      doc.text("Total", 180, 65);
 
       doc.setLineWidth(0.2);
       doc.line(10, 70, 200, 70);
@@ -146,27 +145,28 @@
 
       productos.forEach((producto) => {
         doc.text(producto.descripcion, 10, y);
-        doc.text(producto.cantidad.toString(), 140, y);
-        doc.text(`$${producto.precio.toFixed(2)}`, 170, y);
-        doc.text(`$${(producto.cantidad * producto.precio).toFixed(2)}`, 190, y);
+        doc.text(producto.cantidad.toString(), 120, y);
+        doc.text(`$${producto.precio.toFixed(2)}`, 150, y);
+        doc.text(`$${(producto.cantidad * producto.precio).toFixed(2)}`, 180, y);
         y += 10;
       });
 
       // Espacio para los totales
       doc.line(10, y + 5, 200, y + 5);
-
-      // Subtotal, impuestos y total
+      
       doc.text("Subtotal", 140, y + 15);
-      doc.text(`$${subtotal.toFixed(2)}`, 190, y + 15);
+      doc.text(`$${subtotal.toFixed(2)}`, 180, y + 15);
 
       doc.text("IVA (16%)", 140, y + 25);
-      doc.text(`$${impuesto.toFixed(2)}`, 190, y + 25);
+      doc.text(`$${impuesto.toFixed(2)}`, 180, y + 25);
 
       doc.text("Total a Pagar", 140, y + 35);
-      doc.text(`$${total.toFixed(2)}`, 190, y + 35);
+      doc.text(`$${total.toFixed(2)}`, 180, y + 35);
 
-      // Guardar o visualizar el PDF
-      doc.save('factura.pdf');
+      const pdfBlob = doc.output('blob');
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      window.open(pdfUrl, '_blank');
+      setTimeout(() => URL.revokeObjectURL(pdfUrl), 5000);      
     },
       alertaMensaje(titulo,mensaje,tipo){
       this.$swal.fire({

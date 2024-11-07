@@ -49,9 +49,9 @@
                       <td class="fs-5">{{ item.total_cuenta }}</td>
                       <td class="fs-5">{{ item.total_pagado }}</td>
                       <td class="fs-5">{{ item.saldo }}</td>                                                                
-                      <td>
-                        <button @click="previsualizarDetalle(item.id)">
-                            <i class="fas fa-file-pdf"></i>F
+                      <td class="p-3 ml-5">
+                        <button @click="previsualizarDetalle(item.id)" class="btn btn-warning">                          
+                          <i class="fas fa-file-pdf"></i>
                         </button>                      
                       </td>                      
                     </tr>
@@ -91,10 +91,10 @@ data(){
           clienteId:'',
         },
         headers:[                                            
-                      { text: 'Fecha de Pago', value: '' },
+                      { text: 'Fecha de Pago', value: 'fecha_pago',sortable: true },
                       { text: 'Total Cuenta', value: '' },                      
                       { text: 'Total Pagado', value: '',sortable: true  },
-                      { text: 'Saldo', value: '', sortable: true  },                      
+                      { text: 'Saldo', value: 'saldo', sortable: true  },                      
                       { text: 'Detalle de Cuenta', value: '' },                                                                  
                       ],                  
       }
@@ -133,7 +133,7 @@ methods:{
   async Clientes(idUser){
       try {
         await Promise.all([this.GET_DATA('clientes/'+idUser)]).then((v) => {
-          this.clientes = v[0];               
+          this.clientes = v[0];                         
         });
       } catch (e) {
         console.log(e);
@@ -147,7 +147,6 @@ methods:{
   async previsualizarDetalle(idDetalle){
     await this.consultaDetalle(idDetalle);
     this.abrirModal();
-
   },
   abrirModal(){
     this.$refs.modalComponent.$el.classList.add('show');
@@ -159,7 +158,7 @@ methods:{
   },
   async consultaDetalle(idDetalle){
     const response = await this.$api.get('detalleCuenta/'+idDetalle);
-    this.detalles = response.data;         
+    this.detalles = response.data;     
   },
   alertaMensaje(titulo,mensaje,tipo){
       this.$swal.fire({
@@ -172,7 +171,6 @@ methods:{
         }
       });
     }
-
 },
 computed:{
   calcularSaldo(){              

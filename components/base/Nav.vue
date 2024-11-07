@@ -75,12 +75,10 @@
                         class="btn btn-success dropdown-toggle text-blac fs-6" data-bs-toggle="dropdown" aria-expanded="false">
                     Consultas
                   </button>
-                  <ul class="dropdown-menu">
-                    <!--li><nuxtLink class="nav-link " to="/factura/listaFacturas">Facturas Emitiadas Autorizadas</nuxtLink></!--li-->
-                    <!--li><nuxtLink class="nav-link " to="/retencion/listaRetenciones">Comp. Retención Autorizados</nuxtLink></!--li-->                
-                    <li><nuxtLink class="nav-link fs-6" to="/notaCredito/consultaCuentas">Consulta de Cuentas</nuxtLink></li>                                    
-                    <li><nuxtLink class="nav-link fs-6" to="/notaCredito/ventasDiarias">Consulta Ventas Diarias</nuxtLink></li>
-                    <li><nuxtLink class="nav-link fs-6" to="/notaCredito/consultaVentas">Consulta detalle de Ventas</nuxtLink></li>
+                  <ul class="dropdown-menu ">                    
+                    <li><nuxtLink class="nav-link" to="/notaCredito/consultaCuentas">Consulta de Cuentas</nuxtLink></li>                                    
+                    <li><nuxtLink class="nav-link" to="/notaCredito/ventasDiarias">Consulta Ventas Diarias</nuxtLink></li>
+                    <li><nuxtLink class="nav-link" to="/notaCredito/consultaVentas">Consulta detalle de Ventas</nuxtLink></li>
                   </ul>
                 </div>
               </div>

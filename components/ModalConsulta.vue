@@ -47,10 +47,7 @@
     props: {
       title: String,
       nombreCliente:String,
-      datos: {
-        type: Array,
-        default: () => [] // Inicializa `datos` como un array vacío
-      }
+      datos:Array
     },
     data(){
       return {
@@ -66,7 +63,7 @@
                       { text: 'Cantidad', value: '' },                      
                       { text: 'Producto', value: '',sortable: true  },
                       { text: 'Precio', value: '', sortable: true  }                      
-          ],
+          ],        
       }
     },
     methods: {      
@@ -92,43 +89,30 @@
       const empresa = {
         nombre: "Viveres Santiaguito",
         direccion: "Calle los Vergeles, Barrio el Vergel",                
+        telefono: "23599101",
         email: "romulo_castro61@hotmail.com"
       };    
       const cliente = {
-        nombre: "Juan Pérez",
-        direccion: "Calle Cliente 456",
-        ciudad: "Ciudad del Cliente",
+        nombre: this.nombreCliente,
+        direccion: "Calle Cliente 456",        
         telefono: "+987 654 321",
         email: "juan.perez@email.com"
-      };      
-      const productos = [
-        { descripcion: "Producto A", cantidad: 2, precio: 50 },
-        { descripcion: "Producto B", cantidad: 1, precio: 120 },
-        { descripcion: "Servicio C", cantidad: 1, precio: 200 },
-      ];      
-      let subtotal = 0;
-      productos.forEach(producto => {
-        subtotal += producto.cantidad * producto.precio;
-      });
+      };            
 
-      const impuesto = subtotal * 0.16;  // Supongamos un 16% de IVA
-      const total = subtotal + impuesto;
+      
+      let subtotal = this.datos.reduce((total, dato) => total + Number(dato.subtotal), 0);
+          
 
       doc.setFontSize(18);
       doc.text("Detalle de Venta", 105, 20, null, null, "center");
 
       doc.setFontSize(12);
-      doc.text(`Empresa: ${empresa.nombre}`, 10, 30);
-      doc.text(`Dirección: ${empresa.direccion}`, 10, 35);
-      doc.text(`Ciudad: ${empresa.ciudad}`, 10, 40);
-      doc.text(`Teléfono: ${empresa.telefono}`, 10, 45);
-      doc.text(`Email: ${empresa.email}`, 10, 50);
+      doc.text(`Razon Social: ${empresa.nombre}`, 10, 30);
+      doc.text(`Dirección: ${empresa.direccion}`, 10, 35);      
+      doc.text(`Teléfono: ${empresa.telefono}`, 10, 40);
+      doc.text(`Email: ${empresa.email}`, 10, 45);
 
-      doc.text(`Cliente: ${cliente.nombre}`, 140, 30);
-      doc.text(`Dirección: ${cliente.direccion}`, 140, 35);
-      doc.text(`Ciudad: ${cliente.ciudad}`, 140, 40);
-      doc.text(`Teléfono: ${cliente.telefono}`, 140, 45);
-      doc.text(`Email: ${cliente.email}`, 140, 50);
+      doc.text(`Cliente: ${cliente.nombre}`, 140, 30);      
 
       doc.setLineWidth(0.5);
       doc.line(10, 55, 200, 55);
@@ -143,25 +127,19 @@
 
       let y = 75; // Coordenada Y para la fila de los productos
 
-      productos.forEach((producto) => {
-        doc.text(producto.descripcion, 10, y);
-        doc.text(producto.cantidad.toString(), 120, y);
-        doc.text(`$${producto.precio.toFixed(2)}`, 150, y);
-        doc.text(`$${(producto.cantidad * producto.precio).toFixed(2)}`, 180, y);
+      this.datos.forEach((dato) => {
+        doc.text(dato.nombre_producto, 10, y);
+        doc.text(Number(dato.cantidad).toFixed(2), 120, y);
+        doc.text(`$${dato.subtotal / dato.cantidad}`, 150, y);
+        doc.text(`$${(dato.subtotal)}`, 180, y);
         y += 10;
       });
 
       // Espacio para los totales
       doc.line(10, y + 5, 200, y + 5);
       
-      doc.text("Subtotal", 140, y + 15);
-      doc.text(`$${subtotal.toFixed(2)}`, 180, y + 15);
-
-      doc.text("IVA (16%)", 140, y + 25);
-      doc.text(`$${impuesto.toFixed(2)}`, 180, y + 25);
-
-      doc.text("Total a Pagar", 140, y + 35);
-      doc.text(`$${total.toFixed(2)}`, 180, y + 35);
+      doc.text("Total a Pagar", 140, y + 15);
+      doc.text(`$${Number(subtotal).toFixed(2)}`, 180, y + 15);  
 
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);

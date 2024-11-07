@@ -38,7 +38,7 @@
                       <div class="col">
                         <div class="row">
                           <div class="col">
-                            <input type="text" class="form-control fs-4" v-model="model.pago">
+                            <input type="text" class="form-control fs-4" v-model="model.pago" @keyup.enter="Save()">
                           </div>
                           <div class="col">
                             <button type="button" class="btn btn-primary text-white" @click="pagoJusto()">Pago Justo</button>
@@ -51,7 +51,7 @@
                     <div class="col"><h3>$ {{ calcularCambio }}</h3></div>
                   </div>                                            
                 </div>                
-                <button type="button" class="btn bg-gradient-dark w-100 mb-0" @click="Save()">Guardar Venta</button>
+                <button type="button" class="btn bg-gradient-dark w-100 mb-0" @click="Save()">Guardar Venta</button>                
             </div>                                
             <div class="modal-footer">
               <button type="button" class="btn btn-primary text-white" @click="cerrarModal">Cerrar</button>
@@ -85,7 +85,10 @@ import { computed } from 'vue';
         apiUrl: 'venta',
       }
     },
-    methods: {      
+    methods: {     
+      Emision(){
+        console.log("Funciona");
+      },      
       cerrarModal() {
         this.$emit('cerrar'); // Emite un evento para cerrar el modal
       },

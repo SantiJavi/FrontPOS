@@ -33,7 +33,6 @@
         </ol>
         <h6 class="font-weight-bolder mb-0">{{ modulo }}</h6>
       </nav>
-
       <!--div class="sidenav-toggler sidenav-toggler-inner d-xl-block d-none ">
         <a @click="$event=>sideToogle()" href="javascript:;"  class="nav-link text-body p-0">
           <div class="sidenav-toggler-inner">
@@ -43,7 +42,6 @@
           </div>
         </a>
       </div-->
-
       <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 collapse-nb" id="navbar">
         <div class="container">
             <ul class="nav">

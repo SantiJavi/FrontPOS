@@ -30,7 +30,7 @@ export default {
         {src:"/assets/js/plugins/dropzone.min.js"},
         {src:"/assets/js/plugins/dragula/dragula.min.js"},
         {src:"/assets/js/plugins/jkanban/jkanban.js"},
-        {src:"https://kit.fontawesome.com/42d5adcbca.js"},
+        { src: "https://kit.fontawesome.com/42d5adcbca.js", crossorigin: "anonymous" },
         {src:"/assets/js/plugins/chartjs.min.js"},        
         { src: '/assets/js/lib/forge.min.js'},
         { src: '/assets/js/lib/buffer.js'},

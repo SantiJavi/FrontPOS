@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="" class="fs-6">Número de Identificación</label>
-                                    <input type="text" v-model="model.numero_documento" name="" class="form-control" id="">
+                                    <input type="text" v-model="model.numero_documento" name="" class="form-control" id="" maxlength="10">
                                 </div>
                                 <div class="form-group">
                                     <label for="" class="fs-6">Nombre</label>

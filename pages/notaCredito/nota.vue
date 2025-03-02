@@ -198,8 +198,7 @@
                         </th>
                         <th class="text-uppercase font-weight-bolder ps-2 text-start">
                           SubTotal
-                        </th>       
-                        
+                        </th>                               
                       </tr>
                     </thead>
                     <tbody>
@@ -229,12 +228,12 @@
                             <button class="btn btn-outline-primary mb-0" type="button"
                             @click="[modalEdit=true,item=m]"
                             >                              
-                              <i class="fas fa-pen"></i>
+                              CAMBIAR
                             </button>
                             <button class="btn btn-outline-danger mb-0" type="button"
                             @click="EliminarItem(i)"
                             >
-                            <i class="fas fa-trash"></i>
+                            ELIMINAR
                             </button>
                           </div>
                         </td>

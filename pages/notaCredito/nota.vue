@@ -252,7 +252,7 @@
                   </div>                     
                 </div>              
                 <ModalVerificacion :title="modalTitle" :total="this.granTotal" :cliente="this.model.nombre" :datos="this.carrito" :datos_adicionales="this.model_factura" :secuenciales="this.secuenciales"  @cerrar="cerrarModal" ref="modalComponent" />                
-                <button @click="PrevisualizarFinal()" class="btn bg-gradient-dark w-100 mb-0 fs-5">
+                <button @click="PrevisualizarFinal()" @keyup.enter="handlerEnterRegistro" class="btn bg-gradient-dark w-100 mb-0 fs-5">
                   <i class="fas fa-save mx-2"></i> Registrar Venta
                 </button>                
               </div>
@@ -458,7 +458,7 @@ export default {
     async GET_DATA(path) {
       const res = await this.$api.$get(path);
       return res;
-    },
+    },    
     abrirModal() {      
       this.$refs.modalComponent.$el.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
       this.$refs.modalComponent.$el.style.display = 'block'; // Establece el estilo 'display: block' para mostrar el modal
@@ -484,10 +484,14 @@ export default {
       this.model_factura.cliente_id=this.model.id;       
       this.filteredClientes = [];
     },
+    handleKeyUp(event) {
+      if (event.key === "Enter") {  
+        this.PrevisualizarFinal();
+      } 
+    },
     PrevisualizarFinal(){                     
       this.abrirModal();  
     },
-
     async Datos(idUser) {
       try {        
         await Promise.all([this.GET_DATA('productos/'+idUser)]).then((v) => {
@@ -635,6 +639,7 @@ export default {
           this.filteredClientes = this.clientes;             
           this.model = this.clientes[1]; // id del consumidor final
           this.model_factura.cliente_id=this.model.id;               
+          window.addEventListener("keyup", this.handleKeyUp);
         }        
       } catch (e) {
         console.log(e);
@@ -643,6 +648,10 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    window.removeEventListener("keyup", this.handleKeyUp);
+  },
+
 };
 </script>
 

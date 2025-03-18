@@ -75,8 +75,9 @@
                   </button>
                   <ul class="dropdown-menu ">                    
                     <li><nuxtLink class="nav-link" to="/notaCredito/consultaCuentas">Consulta de Cuentas</nuxtLink></li>                                    
-                    <li><nuxtLink class="nav-link" to="/notaCredito/ventasDiarias">Consulta Ventas Diarias</nuxtLink></li>
+                    <li><nuxtLink class="nav-link" to="/notaCredito/ventasDiarias">Consulta de Ventas</nuxtLink></li>
                     <li><nuxtLink class="nav-link" to="/notaCredito/consultaVentas">Consulta detalle de Ventas</nuxtLink></li>
+                    <li><nuxtLink class="nav-link" to="/notaCredito/registroCuentas">Registro de Cuentas</nuxtLink></li>
                   </ul>
                 </div>
               </div>

@@ -19,8 +19,7 @@ export default {
       { rel: 'stylesheet', href: '/assets/css/nucleo-svg.css'},  
       { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'},  
       { rel: 'stylesheet', href: '/assets/css/soft-ui-dashboard.min.css'},      
-
-      
+      { rel: "stylesheet", href: "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" }
     ],
     script:[
         {src:"/assets/js/core/popper.min.js"},

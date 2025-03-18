@@ -67,6 +67,11 @@
       }
     },
     methods: {      
+      handleKeyUp(event){
+        if (event.key === "Escape"){
+          this.cerrarModal();
+        }
+      },
       cerrarModal() {
         this.$emit('cerrar'); // Emite un evento para cerrar el modal
       },
@@ -84,8 +89,7 @@
     }, 
     generarDocumento(){ 
       const doc = new jsPDF();            
-      doc.setFont("helvetica", "normal");      
-      
+      doc.setFont("helvetica", "normal");            
       const empresa = {
         nombre: "Viveres Santiaguito",
         direccion: "Calle los Vergeles, Barrio el Vergel",                
@@ -97,36 +101,25 @@
         direccion: "Calle Cliente 456",        
         telefono: "+987 654 321",
         email: "juan.perez@email.com"
-      };            
-
-      
-      let subtotal = this.datos.reduce((total, dato) => total + Number(dato.subtotal), 0);
-          
-
+      };                 
+      let subtotal = this.datos.reduce((total, dato) => total + Number(dato.subtotal), 0);        
       doc.setFontSize(18);
       doc.text("Detalle de Venta", 105, 20, null, null, "center");
-
       doc.setFontSize(12);
       doc.text(`Razon Social: ${empresa.nombre}`, 10, 30);
       doc.text(`Dirección: ${empresa.direccion}`, 10, 35);      
       doc.text(`Teléfono: ${empresa.telefono}`, 10, 40);
       doc.text(`Email: ${empresa.email}`, 10, 45);
-
       doc.text(`Cliente: ${cliente.nombre}`, 140, 30);      
-
       doc.setLineWidth(0.5);
       doc.line(10, 55, 200, 55);
-
       doc.text("Descripción", 10, 65);
       doc.text("Cantidad", 120, 65);
       doc.text("Precio.U ", 150, 65);
       doc.text("Total", 180, 65);
-
       doc.setLineWidth(0.2);
       doc.line(10, 70, 200, 70);
-
       let y = 75; // Coordenada Y para la fila de los productos
-
       this.datos.forEach((dato) => {
         doc.text(dato.nombre_producto, 10, y);
         doc.text(Number(dato.cantidad).toFixed(2), 120, y);
@@ -134,13 +127,10 @@
         doc.text(`$${(dato.subtotal)}`, 180, y);
         y += 10;
       });
-
       // Espacio para los totales
-      doc.line(10, y + 5, 200, y + 5);
-      
+      doc.line(10, y + 5, 200, y + 5);      
       doc.text("Total a Pagar", 140, y + 15);
       doc.text(`$${Number(subtotal).toFixed(2)}`, 180, y + 15);  
-
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
@@ -158,6 +148,13 @@
       });
     }    
     },
+    mounted(){
+      window.addEventListener("keyup", this.handleKeyUp);
+    },
+    beforeDestroy() {
+      window.removeEventListener("keyup", this.handleKeyUp);
+    }
+
   }
   </script>
   <style>

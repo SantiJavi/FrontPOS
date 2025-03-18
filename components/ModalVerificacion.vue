@@ -1,5 +1,5 @@
 <template>
-    <div class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal fade" tabindex="0" role="dialog">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -86,9 +86,11 @@ import { computed } from 'vue';
       }
     },
     methods: {     
-      Emision(){
-        console.log("Funciona");
-      },      
+      handleKeyUp(event) {
+        if (event.key === "Escape") {
+            this.cerrarModal();
+          }
+      },        
       cerrarModal() {
         this.$emit('cerrar'); // Emite un evento para cerrar el modal
       },
@@ -154,6 +156,12 @@ import { computed } from 'vue';
         }
         return  Number(this.totalCambio * (-1) ).toFixed(2);                    
       }
+    },
+    mounted(){
+      window.addEventListener("keyup", this.handleKeyUp);
+    },
+    beforeDestroy() {
+      window.removeEventListener("keyup", this.handleKeyUp);
     }
   }
   </script>

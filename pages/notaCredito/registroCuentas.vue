@@ -6,40 +6,9 @@
         <div class="row justify-content-center">
           <div class="col-sm-8 col-12">
             <div class="card">
-              <div class="car-header text-center">
-                <h3>Consulta de Cuentas</h3>
-              </div>
-              <div class="card-body">                    
-                      <div class="row" slot="body">
-                          <div class="col-12">
-                              <div class="form-group autocomplete">
-                                  <label for="" class="fs-5">Busqueda del Cliente</label>
-                                  <div class="row">
-                                    <div class="col-7">
-                                      <input type="text"  name="" class="form-control form-control-lg" id="" placeholder="Busca el Cliente...."
-                                      v-model="searchQuery"
-                                      @input="filterClientes">
-                                      <ul v-if="searchQuery && filteredClientes.length > 0" class="autocomplete-list">
-                                        <li
-                                          v-for="item in filteredClientes"
-                                          :key="item.id"
-                                          @click="selectCliente(item)"
-                                          class="autocomplete-item"
-                                          style="cursor: pointer;"
-                                        >
-                                          {{ item.nombre }}
-                                        </li>
-                                      </ul>  
-                                    </div>
-                                    <div class="col">
-                                      <button type="button" class="btn btn-primary text-white fs-6" @click="BuscarCuenta()">BUSCAR CUENTA</button>
-                                    </div>
-                                  </div>                                  
-                              </div>                                                         
-                          </div>
-                      </div>                                                       
-              </div>
-              <ModalConsulta :datos = "this.detalles" :title = "modalTitle" :nombreCliente = "this.searchQuery" @cerrar="cerrarModal" ref="modalComponent"/>              
+              <div class="car-header text-center mb-4">
+                <h3>Registro de Cuentas Clientes</h3>
+              </div>              
               <v-data-table :headers="headers" 
                               :items="list"                                                                                        
                               class="custom_headers">
@@ -90,11 +59,9 @@ data(){
           saldo:'',
           clienteId:'',
         },
-        headers:[                                            
-                      { text: 'Fecha de Pago', value: 'fecha_pago',sortable: true },
-                      { text: 'Total Cuenta', value: '' },                      
-                      { text: 'Total Pagado', value: '',sortable: true  },
-                      { text: 'Saldo', value: 'saldo', sortable: true  },                      
+        headers:[                                                                  
+                      { text: 'Nombre Cliente', value: 'nombre',sortable: true },
+                      { text: 'Total Deuda', value: '' },
                       { text: 'Detalle de Cuenta', value: '' },                                                                  
                       ],                  
       }

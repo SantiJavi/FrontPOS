@@ -49,9 +49,7 @@
     </div>
     </template>
     
-    <script>
-    import AdminTemplate from '../../components/AdminTemplate.vue';
-    
+    <script>      
     export default {
         name: 'IndexPage',
         head() {
@@ -142,8 +140,7 @@
           ) return 0;
           return Math.ceil(this.pagination.totalItems / this.pagination.rowsPerPage)
         }
-  }
-        
-    }
-    </script>
+  }        
+}
+</script>
     

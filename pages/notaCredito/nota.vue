@@ -101,7 +101,7 @@
                           <span class="input-group-text text-white bg-transparent border-0">
                             <i class="ni ni-archive-2 text-lg" aria-hidden="true"></i>
                           </span>
-                          <input type="text" class="form-control bg-transparent border-0 text-white"
+                          <input ref="campoBuscar" type="text" class="form-control bg-transparent border-0 text-white"
                             placeholder="Buscar..."
                             v-model="buscar"
                             @keyup.enter="CodeBar()" />
@@ -258,7 +258,7 @@
               </div>
             </div>
           </div>
-          <div class="modal fade" :class="modalEdit ? 'showModal' : ''" id="AjusteModal" tabindex="-1" role="dialog"
+          <div class="modal fade" :class="modalEdit ? 'showModal' : ''" id="AjusteModal" tabindex="0" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
@@ -484,11 +484,6 @@ export default {
       this.model_factura.cliente_id=this.model.id;       
       this.filteredClientes = [];
     },
-    handleKeyUp(event) {
-      if (event.key === "Enter") {  
-        this.PrevisualizarFinal();
-      } 
-    },
     PrevisualizarFinal(){                     
       this.abrirModal();  
     },
@@ -541,7 +536,9 @@ export default {
       if(buscarRegistro.length>0){
         let indice=this.carrito.findIndex((i)=>i.producto.id===id);
         let item=this.carrito[indice];
-        this.carrito[indice].cantidad+=1;                
+        this.carrito[indice].cantidad+=1;    
+        this.limpiarCampo();
+        this.$refs.campoBuscar.focus();    
       }else{
         const item={
         producto: producto,
@@ -550,6 +547,8 @@ export default {
         impuesto:producto.impuesto_iva                           
       }            
       this.carrito.push(item);      
+      this.limpiarCampo();
+      this.$refs.campoBuscar.focus();
       }
     },
     EliminarItem(id){
@@ -640,6 +639,7 @@ export default {
           this.model = this.clientes[1]; // id del consumidor final
           this.model_factura.cliente_id=this.model.id;               
           window.addEventListener("keyup", this.handleKeyUp);
+          this.$refs.campoBuscar.focus();                      
         }        
       } catch (e) {
         console.log(e);

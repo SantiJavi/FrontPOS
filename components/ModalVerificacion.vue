@@ -38,7 +38,7 @@
                       <div class="col">
                         <div class="row">
                           <div class="col">
-                            <input type="text" class="form-control fs-4" v-model="model.pago" @keyup.enter="Save()">
+                            <input type="text" class="form-control fs-4" v-model="model.pago">
                           </div>
                           <div class="col">
                             <button type="button" class="btn btn-primary text-white" @click="pagoJusto()">Pago Justo</button>
@@ -59,10 +59,8 @@
           </div>            
         </div>    
     </div>
-  </template>
-  
+  </template>  
   <script>
-import { computed } from 'vue';
 
   export default {
     props: {
@@ -94,6 +92,7 @@ import { computed } from 'vue';
       cerrarModal() {
         this.$emit('cerrar'); // Emite un evento para cerrar el modal
       },
+      /*
       alertaMensajeRouter(titulo){
       this.$swal.fire({
           title: titulo,          
@@ -106,7 +105,23 @@ import { computed } from 'vue';
           }
         })
     },
-      pagoJusto(){
+    */
+    alertaMensajeRouter(titulo){
+      this.$swal.fire({
+        title:titulo,
+        icon: "success",
+        timer:2000,
+        timerProgressBar:true,
+        showConfirmButton:false,
+        toast:false,
+        position:"center"
+      }).then(()=>{
+        this.$router.go(0);
+      })
+
+    },
+    
+    pagoJusto(){
           this.model.pago = this.total          
       },      
       alertaMensaje(titulo,mensaje,tipo){
@@ -130,8 +145,7 @@ import { computed } from 'vue';
           cliente_id:this.datos_adicionales.cliente_id,
           carrito:this.datos,
           fecha_pago: null,                    
-        }
-        console.log(operacion);                               
+        }         
         if( operacion.cliente_id=="" || operacion.total_grabado=="" || operacion.cliente_id === undefined || operacion.total_grabado === undefined){
           this.alertaMensaje("ERROR","Por favor elija el cliente o seleccione productos para procesar la compra","error");
         }else if(operacion.total_grabado == 0){

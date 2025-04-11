@@ -63,7 +63,7 @@
                     <!--li><nuxtLink class="nav-link " to="/factura/facturas">Generar Factura</nuxtLink></!--li-->
                     <!--li><nuxtLink class="nav-link " to="/retencion/generarRetencion">Generar Retención</nuxtLink></!--li-->                
                     <li class="fs-6"><nuxtLink class="nav-link fs-6" to="/notaCredito/nota">Registrar Venta</nuxtLink></li>                
-                    <li class="fs-6"><nuxtLink class="nav-link fs-6" to="/notaCredito/listaCuentas">Pagar Cuenta</nuxtLink></li>                    
+                    <li class="fs-6"><nuxtLink class="nav-link fs-6" to="/notaCredito/listaCuentas">Consultar/Pagar Cuenta</nuxtLink></li>                    
                   </ul>
                 </div>
               </div>
@@ -74,7 +74,7 @@
                     Consultas
                   </button>
                   <ul class="dropdown-menu ">                    
-                    <li><nuxtLink class="nav-link" to="/notaCredito/consultaCuentas">Consulta de Cuentas</nuxtLink></li>                                    
+                    <li><nuxtLink class="nav-link" to="/notaCredito/consultaCuentas">Historial de Cuentas</nuxtLink></li>                                    
                     <li><nuxtLink class="nav-link" to="/notaCredito/ventasDiarias">Consulta de Ventas</nuxtLink></li>
                     <li><nuxtLink class="nav-link" to="/notaCredito/consultaVentas">Consulta detalle de Ventas</nuxtLink></li>
                     <li><nuxtLink class="nav-link" to="/notaCredito/registroCuentas">Registro de Cuentas</nuxtLink></li>

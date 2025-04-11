@@ -487,6 +487,10 @@ export default {
     PrevisualizarFinal(){                     
       this.abrirModal();  
     },
+    playSound() {    
+      const audio = new Audio('/assets/sounds/TonoAdd.mp3');
+      audio.play()
+    },
     async Datos(idUser) {
       try {        
         await Promise.all([this.GET_DATA('productos/'+idUser)]).then((v) => {
@@ -536,7 +540,8 @@ export default {
       if(buscarRegistro.length>0){
         let indice=this.carrito.findIndex((i)=>i.producto.id===id);
         let item=this.carrito[indice];
-        this.carrito[indice].cantidad+=1;    
+        this.carrito[indice].cantidad+=1;
+        this.playSound();    
         this.limpiarCampo();
         this.$refs.campoBuscar.focus();    
       }else{
@@ -546,7 +551,8 @@ export default {
         precio:producto.precio_producto,
         impuesto:producto.impuesto_iva                           
       }            
-      this.carrito.push(item);      
+      this.carrito.push(item);
+      this.playSound();      
       this.limpiarCampo();
       this.$refs.campoBuscar.focus();
       }

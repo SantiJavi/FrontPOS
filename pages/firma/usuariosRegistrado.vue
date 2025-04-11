@@ -56,7 +56,6 @@
 </template>
 
 <script>
-import AdminTemplate from '../../components/AdminTemplate.vue';
 import {getFechaExpiracionFirma} from '/utils/utils';
 import {transformFecha,getFechaActual} from '/utils/fechas';
 export default {

@@ -449,8 +449,9 @@ export default {
     totalIva(){
         return Number(this.carrito.reduce((acumulado, m) => acumulado + ((m.precio * m.cantidad) * m.producto.impuesto_iva/100 ), 0)).toFixed(2);    
     },
-    granTotal(){
+    granTotal(){      
       return Number(this.totalSinImpuestos);
+
     }
     
   },

@@ -51,7 +51,7 @@
                     <div class="col"><h3>$ {{ calcularCambio }}</h3></div>
                   </div>                                            
                 </div>                
-                <button type="button" class="btn bg-gradient-dark w-100 mb-0" @click="Save()">Guardar Venta</button>                
+                <button type="button" class="btn bg-gradient-dark w-100 mb-0" @click="Save()" :disabled="estadoBoton">Guardar Venta</button>                
             </div>                                
             <div class="modal-footer">
               <button type="button" class="btn btn-primary text-white" @click="cerrarModal">Cerrar</button>
@@ -81,6 +81,7 @@
         totalCambio:0,
         tipoPago: 'efectivo',
         apiUrl: 'venta',
+        estadoBoton:false,
       }
     },
     methods: {     
@@ -136,6 +137,7 @@
       });
     },
       async Save(){
+        this.estadoBoton=true;
         const operacion = {
           fecha_emision: this.datos_adicionales.fecha_emision,
           tipo_pago:this.tipoPago,          

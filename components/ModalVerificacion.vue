@@ -150,16 +150,19 @@
         }         
         if( operacion.cliente_id=="" || operacion.total_grabado=="" || operacion.cliente_id === undefined || operacion.total_grabado === undefined){
           this.alertaMensaje("ERROR","Por favor elija el cliente o seleccione productos para procesar la compra","error");
+          this.estadoBoton=false;
         }else if(operacion.total_grabado == 0){
           this.alertaMensaje("ATENCION","El valor de la Venta no puede ser Cero. No se puede Registrar la Venta","info");
+          this.estadoBoton=false;
         }else if(operacion.cliente_id == '2' && operacion.tipo_pago == 'credito'){                    
           this.alertaMensaje("ATENCION","El Cliente Consumidor Final no puede tener Crédito","error");
+          this.estadoBoton=false;
         }else{
             if(operacion.tipo_pago == "efectivo") {
                 operacion.fecha_pago = operacion.fecha_emision
             }
             const res = await this.$api.$post(this.apiUrl,operacion);
-            this.alertaMensajeRouter(res);            
+            this.alertaMensajeRouter(res);                        
         }          
       }
     },

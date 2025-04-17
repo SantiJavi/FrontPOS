@@ -50,10 +50,15 @@
                     <td class="fs-6">{{ item.total_grabado }}</td>
                     <td class="fs-6">{{ item.cliente.nombre }}</td>
                     <td class="fs-6">{{ item.tipo_pago}}</td>  
-                    <td>
+                    <td class="">
+                      <button @click="modalAuth()" class="btn btn-info py-1 px-2">
+                        <i class="fas fa-pen"></i>
+                      </button>
+                      <!--
                       <nuxt-link :to="url_editar + item.id" class="btn btn-info py-1 px-2">
                           <i class="fas fa-pen"></i>
-                        </nuxt-link>
+                      </nuxt-link>
+                      -->
                     </td>
 
 
@@ -139,8 +144,46 @@
         if (result.isConfirmed) {                      
           }
       });
-    }
-      },
+    },
+      modalAuth(){
+        this.$swal.fire({
+          title: "Ingrese la clave para realizar el cambio",
+          input: "text",
+          inputAttributes: {
+            autocapitalize: "off"
+          },
+          showCancelButton: true,
+          confirmButtonText: "Ingresar",
+          showLoaderOnConfirm: true,
+          preConfirm: async (login) => {
+            try {
+              const githubUrl = `
+                https://api.github.com/users/${login}
+              `;
+              const response = await fetch(githubUrl);
+              if (!response.ok) {
+                return this.$swal.showValidationMessage(`
+                  ${JSON.stringify(await response.json())}
+                `);
+              }
+              return response.json();
+            } catch (error) {
+              this.$swal.showValidationMessage(`
+                Request failed: ${error}
+              `);
+            }
+          },
+          allowOutsideClick: () => !this.$swal.isLoading()
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.$swal.fire({
+              title: `${result.value.login}'s avatar`,
+              imageUrl: result.value.avatar_url
+            });
+          }
+        });   
+      }
+    },
       computed:{
         totalVendido(){
           return this.list.reduce((total,m)=>{            

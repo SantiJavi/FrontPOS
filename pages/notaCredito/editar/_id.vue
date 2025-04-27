@@ -15,15 +15,18 @@
                         <div class="col-12">
                                 <div class="form-group">
                                     <label for="">Fecha de Compra</label>
-                                    <input type="text" v-model="model.fecha_emision" name="" class="form-control" id="" readonly>
+                                    <input type="date" v-model="model.fecha_emision" name="" class="form-control" id="">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Total Comprado</label>
-                                    <input type="text" v-model="model.total_grabado" name="" class="form-control" id="" readonly>
+                                    <input type="text" v-model="model.total_grabado" name="" class="form-control" id="">
                                 </div>
                                 <div class="form-group">
                                     <label for="">Cliente</label>
-                                    <input type="email" v-model="model.cliente.nombre" name="" class="form-control" id="" readonly>
+                                    <!--input type="text" v-model="model.cliente.nombre" name="" class="form-control" id=""-->
+                                    <select class="form-control" v-model="model.cliente_id" @change="updateFields">
+                                      <option class="form-control" v-for="item in clientes" :key="item.id" :value="item.id">{{ item.nombre }}</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="">Tipo de Venta</label>
@@ -51,7 +54,6 @@
         </div>
       </AdminTemplate>
     </div>
-
 </template>
 <script>
 export default {
@@ -67,6 +69,7 @@ export default {
             modulo:'Cambiar Venta',
             page:'Editar',
             apiUrl:'ventas',
+            clientes:[],
             model:{
                 id:'',
                 fecha_emision:'',
@@ -78,6 +81,10 @@ export default {
                 cliente_id:'',
                 cuenta_id:'',
                 cliente:''               
+            },
+            modelCliente:{              
+              id:'',
+              nombre:''              
             }
         }
     },
@@ -85,7 +92,7 @@ export default {
       async Save(){
         this.load = true;
         try{
-          const res = await this.$api.$put(this.apiUrl+"/"+this.model.id,this.model);                   
+          const res = await this.$api.$put(this.apiUrl+"/"+this.model.id,this.model);                             
           if(res.code == 500) {
              this.alertaMensaje("Error al Actualizar",res.message,"error");
             }else{
@@ -95,6 +102,15 @@ export default {
           console.log(e);
         }finally{
           this.load =false;
+        }
+      },
+      async Clientes(idUser){
+        try{
+          await Promise.all([this.GET_DATA('clientes/'+idUser)]).then((v)=>{            
+            this.clientes = v[0];            
+          });
+        }catch(e){
+          console.log(e);
         }
       },
       async GET_DATA(path){
@@ -123,14 +139,25 @@ export default {
             this.$router.back();
           }
         })
-    }
+    },
+    updateFields(){           
+      this.modelCliente = this.clientes.find(option => option.id === this.model.cliente_id);       
+        this.model.cliente_id = this.modelCliente.id;
+    },
     },
     mounted(){
         this.$nextTick(async () =>{
             try{
-                await Promise.all([this.GET_DATA('venta/'+this.$route.params.id)]).then((v)=>{                                      
-                  this.model = v[0][0];                  
-                })              
+                let loginUser = localStorage.getItem('userAuth');
+                this.user = JSON.parse(loginUser);
+                if (this.user == null){
+                  this.$router.push('/auth/login');
+                }else{
+                  await Promise.all([this.GET_DATA('venta/'+this.$route.params.id)]).then((v)=>{                                      
+                    this.model = v[0][0];                  
+                  }); 
+                  await this.Clientes(this.user.id);                
+                }                
             }catch(e){
                 console.log(e)
             }finally{

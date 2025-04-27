@@ -51,23 +51,15 @@
                     <td class="fs-6">{{ item.cliente.nombre }}</td>
                     <td class="fs-6">{{ item.tipo_pago}}</td>  
                     <td class="">
-                      <button @click="modalAuth()" class="btn btn-info py-1 px-2">
+                      <button @click="modalAuth(item.id)" class="btn btn-info py-1 px-2">
                         <i class="fas fa-pen"></i>
-                      </button>
-                      <!--
-                      <nuxt-link :to="url_editar + item.id" class="btn btn-info py-1 px-2">
-                          <i class="fas fa-pen"></i>
-                      </nuxt-link>
-                      -->
+                      </button>                  
                     </td>
-
-
                   </tr>
                 </template>
               </v-data-table> 
             </div>
-            </div>            
-                                      
+            </div>                                                  
             <div class="container">              
               <div class="row justify-content-md-center">
                 <div class="col-md-auto">
@@ -85,10 +77,7 @@
   </AdminTemplate>
   </div>
   </template>
-  
-  <script>
-  import AdminTemplate from '../../components/AdminTemplate.vue';
-  
+  <script>  
   export default {
       name: 'IndexPage',
       head() {          
@@ -100,6 +89,7 @@
         return{
           load:true,
           list:[],
+          clientes:[],
           user:{},          
           search: '',          
           apiUrl:'ventasDiarias',
@@ -145,66 +135,57 @@
           }
       });
     },
-      modalAuth(){
-        this.$swal.fire({
-          title: "Ingrese la clave para realizar el cambio",
-          input: "text",
-          inputAttributes: {
-            autocapitalize: "off"
-          },
-          showCancelButton: true,
-          confirmButtonText: "Ingresar",
-          showLoaderOnConfirm: true,
-          preConfirm: async (login) => {
-            try {
-              const githubUrl = `
-                https://api.github.com/users/${login}
-              `;
-              const response = await fetch(githubUrl);
-              if (!response.ok) {
-                return this.$swal.showValidationMessage(`
-                  ${JSON.stringify(await response.json())}
-                `);
-              }
-              return response.json();
-            } catch (error) {
-              this.$swal.showValidationMessage(`
-                Request failed: ${error}
-              `);
-            }
-          },
-          allowOutsideClick: () => !this.$swal.isLoading()
-        }).then((result) => {
-          if (result.isConfirmed) {
-            this.$swal.fire({
-              title: `${result.value.login}'s avatar`,
-              imageUrl: result.value.avatar_url
-            });
+    modalAuth(idItem){
+      this.$swal.fire({
+        title: "Ingrese la clave para realizar el cambio",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Ingresar",
+        cancelButtonText: "Salir",
+        showLoaderOnConfirm: true,
+        preConfirm: async (login) => {
+          try {            
+            if(login === 'eulalia27'){                                          
+              this.$router.push(this.url_editar+idItem);
+            }else{     
+              this.$swal.showValidationMessage(
+              `Contraseña Incorrecta`);
+            }       
+          } catch (error) {
+            this.$swal.showValidationMessage(
+              `Error en el Ingreso: ${error}`);
           }
-        });   
-      }
-    },
-      computed:{
-        totalVendido(){
-          return this.list.reduce((total,m)=>{            
-            const subtotal = parseFloat(m.total_grabado);
-            return total + subtotal;
-          },0);
         }        
-      },
-      async mounted(){
-      try {
-        let loginUser = localStorage.getItem('userAuth');
-        this.user = JSON.parse(loginUser);
-        if(this.user == null){
-          this.$router.push('/auth/login');
-        }else{
-        }       
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.load = false;
-    }        
+      })  
+    }
+  },
+    computed:{
+      totalVendido(){
+        return this.list.reduce((total,m)=>{            
+          const subtotal = parseFloat(m.total_grabado);
+          return total + subtotal;
+        },0);
+      }        
+    },
+    mounted(){
+      this.$nextTick(async () =>{
+      try 
+      {
+          let loginUser = localStorage.getItem('userAuth');
+          this.user = JSON.parse(loginUser);                    
+          if(this.user == null){
+            this.$router.push('/auth/login');
+          }else{                                  
+          }       
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.load = false;
+      }
+      });        
     }
 }
   </script>

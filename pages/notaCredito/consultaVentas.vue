@@ -72,8 +72,7 @@
   </div>
   </template>
   
-  <script>
-  import AdminTemplate from '../../components/AdminTemplate.vue';
+  <script>  
   
   export default {
       name: 'IndexPage',
@@ -116,7 +115,7 @@
             this.alertaMensaje("Error","La fecha de Consulta no puede estar vacia","error");
         }else{
           const response = await this.$api.$post(this.apiUrl,this.model);        
-          this.list = response;
+          this.list = response;        
         }           
       },
       alertaMensaje(titulo,mensaje,tipo){

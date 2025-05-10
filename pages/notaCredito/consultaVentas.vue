@@ -46,7 +46,8 @@
                     <td class="fs-6">{{ item.venta.fecha_emision }}</td>
                     <td class="fs-6">{{ item.cantidad }}</td>
                     <td class="fs-6">{{ item.producto.nombre_producto }}</td>
-                    <td class="fs-6">{{ item.subtotal}}</td>                  
+                    <td class="fs-6">{{ item.subtotal}}</td>         
+                    <td class="fs-6">{{ item.venta.cliente.nombre}}</td>         
                     <td class="fs-6">{{ item.venta.tipo_pago }}</td>
 
                   </tr>
@@ -101,6 +102,7 @@
                     { text: 'Cantidad', value: '' },                      
                     { text: 'Producto', value: '',sortable: true  },
                     { text: 'Total', value: '', sortable: true  },
+                    { text: 'Cliente al que Vendio',value: ''},
                     { text: 'Tipo de Venta', value: '' },],
         }
       },

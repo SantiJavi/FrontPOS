@@ -50,19 +50,16 @@
                     <td class="fs-6">{{ item.total_grabado }}</td>
                     <td class="fs-6">{{ item.cliente.nombre }}</td>
                     <td class="fs-6">{{ item.tipo_pago}}</td>  
-                    <td>
-                      <nuxt-link :to="url_editar + item.id" class="btn btn-info py-1 px-2">
-                          <i class="fas fa-pen"></i>
-                        </nuxt-link>
+                    <td class="">
+                      <button @click="modalAuth(item.id)" class="btn btn-info py-1 px-2">
+                        <i class="fas fa-pen"></i>
+                      </button>                  
                     </td>
-
-
                   </tr>
                 </template>
               </v-data-table> 
             </div>
-            </div>            
-                                      
+            </div>                                                  
             <div class="container">              
               <div class="row justify-content-md-center">
                 <div class="col-md-auto">
@@ -80,10 +77,7 @@
   </AdminTemplate>
   </div>
   </template>
-  
-  <script>
-  import AdminTemplate from '../../components/AdminTemplate.vue';
-  
+  <script>  
   export default {
       name: 'IndexPage',
       head() {          
@@ -95,6 +89,7 @@
         return{
           load:true,
           list:[],
+          clientes:[],
           user:{},          
           search: '',          
           apiUrl:'ventasDiarias',
@@ -139,29 +134,58 @@
         if (result.isConfirmed) {                      
           }
       });
-    }
-      },
-      computed:{
-        totalVendido(){
-          return this.list.reduce((total,m)=>{            
-            const subtotal = parseFloat(m.total_grabado);
-            return total + subtotal;
-          },0);
+    },
+    modalAuth(idItem){
+      this.$swal.fire({
+        title: "Ingrese la clave para realizar el cambio",
+        input: "text",
+        inputAttributes: {
+          autocapitalize: "off"
+        },
+        showCancelButton: true,
+        confirmButtonText: "Ingresar",
+        cancelButtonText: "Salir",
+        showLoaderOnConfirm: true,
+        preConfirm: async (login) => {
+          try {            
+            if(login === 'eulalia27'){                                          
+              this.$router.push(this.url_editar+idItem);
+            }else{     
+              this.$swal.showValidationMessage(
+              `Contraseña Incorrecta`);
+            }       
+          } catch (error) {
+            this.$swal.showValidationMessage(
+              `Error en el Ingreso: ${error}`);
+          }
         }        
-      },
-      async mounted(){
-      try {
-        let loginUser = localStorage.getItem('userAuth');
-        this.user = JSON.parse(loginUser);
-        if(this.user == null){
-          this.$router.push('/auth/login');
-        }else{
-        }       
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.load = false;
-    }        
+      })  
+    }
+  },
+    computed:{
+      totalVendido(){
+        return this.list.reduce((total,m)=>{            
+          const subtotal = parseFloat(m.total_grabado);
+          return total + subtotal;
+        },0);
+      }        
+    },
+    mounted(){
+      this.$nextTick(async () =>{
+      try 
+      {
+          let loginUser = localStorage.getItem('userAuth');
+          this.user = JSON.parse(loginUser);                    
+          if(this.user == null){
+            this.$router.push('/auth/login');
+          }else{                                  
+          }       
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.load = false;
+      }
+      });        
     }
 }
   </script>

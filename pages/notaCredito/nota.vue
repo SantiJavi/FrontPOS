@@ -183,7 +183,7 @@
                     <i class="fas fa-trash" aria-hidden="true"></i>
                   </button>
                 </div>
-                <div class="table-responsive p-0" style="min-height: 40vh;max-height: 40vh;overflow-y: scroll;overflow-x: none;" >
+                <div class="table-responsive p-0" style="min-height: 40vh;max-height: 40vh;overflow-y: scroll;overflow-x: none;" ref="tablaScroll" >
                   <table class="table align-items-center justify-content-center mb-0">
                     <thead>
                       <tr>
@@ -204,22 +204,22 @@
                     <tbody>
                       <tr v-for="(m,i) in carrito">
                         <td class="text-start">
-                          <p class="font-weight-bold mb-0 text-start">
+                          <p class="font-weight-bold mb-0 text-start h5">
                             {{ m.producto.nombre_producto }}
                           </p>
                         </td>
                         <td class="text-start">
-                          <p class="font-weight-bold mb-0 text-start">
+                          <p class="font-weight-bold mb-0 text-start h5">
                             {{ m.cantidad == null ? alerta("valor de cantidad"): m.cantidad}}
                           </p>
                         </td>
                         <td class="text-start">
-                          <p class="font-weight-bold mb-0 text-start">
+                          <p class="font-weight-bold mb-0 text-start h5">
                             {{ Number(m.precio).toFixed(4) }}
                           </p>
                         </td>      
                         <td class="text-start">
-                          <p class="font-weight-bold mb-0 text-start">
+                          <p class="font-weight-bold mb-0 text-start h5">
                             {{ Number(m.precio*m.cantidad - m.producto.descuento).toFixed(2) < 0 ? alerta("subtotal") : Number(m.precio*m.cantidad - m.producto.descuento).toFixed(2)}}
                           </p>
                         </td>
@@ -557,6 +557,12 @@ export default {
       this.limpiarCampo();
       this.$refs.campoBuscar.focus();
       }
+      this.$nextTick(()=>{
+        const contenedor = this.$refs.tablaScroll;
+        if (contenedor) {
+          contenedor.scrollTop = contenedor.scrollHeight;
+        }
+      });
     },
     EliminarItem(id){
     this.carrito.splice(id,1);

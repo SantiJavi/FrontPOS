@@ -41,7 +41,8 @@
   </template>
   
   <script>
-  import jsPDF, {jspdf} from "jspdf";
+    import jsPDF from 'jspdf'
+    import autoTable from 'jspdf-autotable'
 
   export default {
     props: {
@@ -59,10 +60,10 @@
         tipoPago: 'efectivo',
         apiUrl: 'venta',        
         headers:[                                            
-                      { text: 'Fecha', value: '' },
-                      { text: 'Cantidad', value: '' },                      
-                      { text: 'Producto', value: '',sortable: true  },
-                      { text: 'Precio', value: '', sortable: true  }                      
+          { text: 'Fecha', value: '' },
+          { text: 'Cantidad', value: '' },                      
+          { text: 'Producto', value: '',sortable: true  },
+          { text: 'Precio', value: '', sortable: true  }                      
           ],        
       }
     },
@@ -89,7 +90,8 @@
     }, 
     generarDocumento(){ 
       const doc = new jsPDF();            
-      doc.setFont("helvetica", "normal");            
+      doc.setFont("helvetica", "normal");    
+
       const empresa = {
         nombre: "Viveres Santiaguito",
         direccion: "Calle los Vergeles, Barrio el Vergel",                
@@ -97,11 +99,23 @@
         email: "romulo_castro61@hotmail.com"
       };    
       const cliente = {
-        nombre: this.nombreCliente,
-        direccion: "Calle Cliente 456",        
-        telefono: "+987 654 321",
-        email: "juan.perez@email.com"
-      };                 
+        nombre: this.nombreCliente,        
+      };
+      const columnas = [
+          { header: 'Descripción', dataKey: 'descripcion' },
+          { header: 'Cantidad', dataKey: 'cantidad' },
+          { header: 'Precio.U', dataKey: 'precio' },
+          { header: 'Total', dataKey: 'total' },
+      ];
+
+      const filas = this.datos.map(dato=>({
+          descripcion: dato.nombre_producto,
+          cantidad: Number(dato.cantidad).toFixed(2),
+          precio: `$${Number(dato.subtotal / dato.cantidad).toFixed(2)}`,
+          total: `$${(dato.subtotal)}`
+      }));
+
+
       let subtotal = this.datos.reduce((total, dato) => total + Number(dato.subtotal), 0);        
       doc.setFontSize(18);
       doc.text("Detalle de Venta", 105, 20, null, null, "center");
@@ -113,24 +127,25 @@
       doc.text(`Cliente: ${cliente.nombre}`, 140, 30);      
       doc.setLineWidth(0.5);
       doc.line(10, 55, 200, 55);
-      doc.text("Descripción", 10, 65);
-      doc.text("Cantidad", 120, 65);
-      doc.text("Precio.U ", 150, 65);
-      doc.text("Total", 180, 65);
-      doc.setLineWidth(0.2);
-      doc.line(10, 70, 200, 70);
-      let y = 75; // Coordenada Y para la fila de los productos
-      this.datos.forEach((dato) => {
-        doc.text(dato.nombre_producto, 10, y);
-        doc.text(Number(dato.cantidad).toFixed(2), 120, y);
-        doc.text(`$${dato.subtotal / dato.cantidad}`, 150, y);
-        doc.text(`$${(dato.subtotal)}`, 180, y);
-        y += 10;
-      });
+      autoTable(doc,{
+        head: [columnas.map(col => col.header)],
+        body: filas.map(row => columnas.map(col => row[col.dataKey])),
+        startY: 65,
+        margin: { top: 10, bottom: 10 },
+        styles: {
+          fontSize: 10,
+          overflow: 'linebreak',
+          cellPadding: 3,
+        },
+        didDrawPage: (data) => {
+          // Agrega footer o encabezado en cada página si lo necesitas
+        },
+      })
       // Espacio para los totales
+      let y = doc.lastAutoTable.finalY;
       doc.line(10, y + 5, 200, y + 5);      
       doc.text("Total a Pagar", 140, y + 15);
-      doc.text(`$${Number(subtotal).toFixed(2)}`, 180, y + 15);  
+      doc.text(`$${Number(subtotal).toFixed(2)}`, 180, y + 15);
       const pdfBlob = doc.output('blob');
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
@@ -154,7 +169,6 @@
     beforeDestroy() {
       window.removeEventListener("keyup", this.handleKeyUp);
     }
-
   }
   </script>
   <style>

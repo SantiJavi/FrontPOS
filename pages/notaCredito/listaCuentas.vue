@@ -144,7 +144,7 @@ methods:{
          this.alertaMensaje("Atencion","No existen Valores que pagar","error");
       }else if(this.model.valor_recibido == 0 || this.model.valor_recibido == null){
         this.alertaMensaje("Atencion","Ingrese el valor que le Pagaron","info");
-      }else if(Number(this.model.valor_recibido) > ( Number(this.model.total) + Number(this.model.saldo_anterior))){        
+      }else if(Number(this.model.valor_recibido) > ( Number(this.model.total) + Number(this.model.saldo_anterior)).toFixed(2)){        
         this.alertaMensaje("Atencion","El valor CANCELADO es mayor al valor que le DEBEN. Revise los valores ingresados e Intente de Nuevo","info");
       }else if (this.model.valor_recibido < 0 ) {
         this.alertaMensaje("Atencion","El valor CANCELADO debe ser MAYOR a CERO. Revise los valores ingresados e Intente de Nuevo","info");

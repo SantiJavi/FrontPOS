@@ -113,9 +113,14 @@
                                     <button type="button" class="btn btn-danger text-white" @click="limpiarCampo()">Borrar</button>
                                   </div>                                                                                    
                                 </div>                 
-                              </!--div-->
+                              </!--div-->                              
                               <div class="d-flex align-items-start flex-column">                                
-                                <div><button type="button" class="badge badge-primary text-white" @click="limpiarCampo()">Borrar</button></div>  
+                                <div>                                  
+                                  <button type="button" class="badge badge-primary text-white" @click="limpiarCampo()">Borrar</button>
+                                </div>                                  
+                                <div>
+                                  <ModalAdicion :title="modalTitleAdicionar" @cerrar="cerrarModalAdicion" ref="modalAdicion" />                
+                                  <button type="button" class="badge badge-success text-black" @click="abrirModalAdicion()">Añadir</button></div>  
                               </div>                                           
                             </span>
                         </div>
@@ -340,6 +345,7 @@ export default {
   data() {
     return {
       modalTitle: 'Resumen Final',
+      modalTitleAdicionar: 'Adicionar Nuevo Producto',
       datosTabla:[],
       datosTotales:{},
       datosUsuario:{},      
@@ -360,7 +366,8 @@ export default {
       user:{},
       searchQuery: '', 
       filteredClientes:'',
-      clienteSeleccionado:'',                
+      clienteSeleccionado:'',
+      apiProductos:'productos',                
       item:{
         producto:{
           nombre:''
@@ -451,7 +458,6 @@ export default {
     },
     granTotal(){      
       return Number(this.totalSinImpuestos);
-
     }
     
   },
@@ -464,6 +470,15 @@ export default {
       this.$refs.modalComponent.$el.classList.add('show'); // Agrega la clase 'show' para mostrar el modal
       this.$refs.modalComponent.$el.style.display = 'block'; // Establece el estilo 'display: block' para mostrar el modal
       //document.body.classList.add('modal-open'); // Agrega la clase 'modal-open' al cuerpo para evitar el desplazamiento      
+    },
+    abrirModalAdicion() {
+      this.$refs.modalAdicion.$el.classList.add('show'); 
+      this.$refs.modalAdicion.$el.style.display = 'block'; 
+    },
+    cerrarModalAdicion() {
+      this.$refs.modalAdicion.$el.classList.remove('show'); // Remueve la clase 'show' para ocultar el modal
+      this.$refs.modalAdicion.$el.style.display = 'none'; // Establece el estilo 'display: none' para ocultar el modal
+      //document.body.classList.remove('modal-open'); // Remueve la clase 'modal-open' del cuerpo
     },
     cerrarModal() {
       this.$refs.modalComponent.$el.classList.remove('show'); // Remueve la clase 'show' para ocultar el modal
@@ -488,6 +503,7 @@ export default {
     PrevisualizarFinal(){                     
       this.abrirModal();  
     },
+
     playSound() {    
       const audio = new Audio('/assets/sounds/TonoAdd.mp3');
       audio.play()
@@ -574,6 +590,23 @@ export default {
         this.AddProducto(buscarRegistro[0]);
         this.buscar='';
       }
+    },
+    async agregarProducto(){
+      const productoNuevo = {
+                              "codigo_producto":"667733", 
+                              "nombre_producto":"Prueba4San",
+                              "codigo_aux":"",
+                              "precio_producto":"10",
+                              "impuesto_iva":"15",
+                              "descuento":"0.00",
+                              "impuesto_ice":"0",
+                              "user_id":1
+                            };
+      const res = await this.$api.$post(this.apiProductos,productoNuevo);      
+      if(res.code === 200){
+        //await this.Datos(this.user.id);
+      }
+
     },
     limpiarCampo(){
       this.buscar ='';

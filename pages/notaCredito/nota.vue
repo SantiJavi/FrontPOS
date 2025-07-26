@@ -119,7 +119,7 @@
                                   <button type="button" class="badge badge-primary text-white" @click="limpiarCampo()">Borrar</button>
                                 </div>                                  
                                 <div>
-                                  <ModalAdicion :title="modalTitleAdicionar" @cerrar="cerrarModalAdicion" ref="modalAdicion" />                
+                                  <ModalAdicion :title="modalTitleAdicionar" :usuario="user.id" :codigoProducto="buscar" @cerrar="cerrarModalAdicion" @guardar="recibirRespuestaModal" ref="modalAdicion" />                
                                   <button type="button" class="badge badge-success text-black" @click="abrirModalAdicion()">Añadir</button></div>  
                               </div>                                           
                             </span>
@@ -367,7 +367,8 @@ export default {
       searchQuery: '', 
       filteredClientes:'',
       clienteSeleccionado:'',
-      apiProductos:'productos',                
+      apiProductos:'productos',
+                     
       item:{
         producto:{
           nombre:''
@@ -591,6 +592,14 @@ export default {
         this.buscar='';
       }
     },
+    recibirRespuestaModal(respuesta) {
+      if(respuesta){
+        this.Datos(this.user.id);
+         this.buscar='';
+      }else{
+        console.log("Error al actualizar y recibir la respuesta modal");
+      }
+    },
     async agregarProducto(){
       const productoNuevo = {
                               "codigo_producto":"667733", 
@@ -675,7 +684,7 @@ export default {
         if(this.user == null){
           this.$router.push('/auth/login');
         }else{
-          await this.Datos(this.user.id);
+          await this.Datos(this.user.id);        
           await this.Clientes(this.user.id);
           await this.Secuenciales(this.user.id); 
           await this.Usuario(this.user.id);                              

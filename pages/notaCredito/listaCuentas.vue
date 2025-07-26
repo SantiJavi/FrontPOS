@@ -126,7 +126,7 @@ data(){
         clientes:[],
         list:[],
         headers:[
-          { text: 'Fecha de Compra', value: '' },
+          { text: 'Fecha de Compra', value: 'fecha_pago',sortable:true },
           { text: 'Cantidad', value: '' },
           { text: 'Producto', value: '' },
           { text: 'Subtotal', value: '' },  
